@@ -160,24 +160,28 @@
     }
 
     document.addEventListener('keydown', (event) => {
-      event.preventDefault();
-      switch (event.key) {
-        case 'ArrowUp':
-          if (direction !== 'down') direction = 'up';
-          break;
-        case 'ArrowDown':
-          if (direction !== 'up') direction = 'down';
-          break;
-        case 'ArrowLeft':
-          if (direction !== 'right') direction = 'left';
-          break;
-        case 'ArrowRight':
-          if (direction !== 'left') direction = 'right';
-          break;
-        case ' ':
-          if (!gameLoop) initGame();  // Now properly checks if game isn't running
-          break;
-      }
+  event.preventDefault();
+  switch (event.key) {
+    case 'ArrowUp':
+    case 'w':
+      if (direction !== 'down') direction = 'up';
+      break;
+    case 'ArrowDown':
+    case 's':
+      if (direction !== 'up') direction = 'down';
+      break;
+    case 'ArrowLeft':
+    case 'a':
+      if (direction !== 'right') direction = 'left';
+      break;
+    case 'ArrowRight':
+    case 'd':
+      if (direction !== 'left') direction = 'right';
+      break;
+    case ' ':
+      if (!gameLoop) initGame(); // Now properly checks if game isn't running
+      break;
+  }
     });
 
     // Start the game
