@@ -12,7 +12,6 @@
   <h1>Brad's Snake Game</h1>
   <canvas id="gameCanvas" width="400" height="400"></canvas>
   <div id="score" style="margin-top: 20px; font-size: 24px;">Score: 0</div>
-
   <div id="speed" style="margin-top: 20px; font-size: 24px;">speed: 0</div>
 
   <button id="bradButton" style="padding: 10px; background-color: rgb(238, 143, 27); border-radius: 10px;">
@@ -60,13 +59,13 @@
     let direction = 'right';
     let score = 0;
     let gameLoop;
-    let gameSpeed = 150;
+    let gameSpeed = 0;
 
     function initGame() {
       snake = [{ x: 10, y: 10 }];
       direction = 'right';
       score = 0;
-      gameSpeed = 150;
+      gameSpeed = 300;
       scoreElement.textContent = `Score: ${score}`;
 
       speedElement.textContent = `Speed: ${gameSpeed}`;
@@ -160,28 +159,28 @@
     }
 
     document.addEventListener('keydown', (event) => {
-  event.preventDefault();
-  switch (event.key) {
-    case 'ArrowUp':
-    case 'w':
-      if (direction !== 'down') direction = 'up';
-      break;
-    case 'ArrowDown':
-    case 's':
-      if (direction !== 'up') direction = 'down';
-      break;
-    case 'ArrowLeft':
-    case 'a':
-      if (direction !== 'right') direction = 'left';
-      break;
-    case 'ArrowRight':
-    case 'd':
-      if (direction !== 'left') direction = 'right';
-      break;
-    case ' ':
-      if (!gameLoop) initGame(); // Now properly checks if game isn't running
-      break;
-  }
+      event.preventDefault();
+      switch (event.key) {
+        case 'ArrowUp':
+        case 'w':
+          if (direction !== 'down') direction = 'up';
+          break;
+        case 'ArrowDown':
+        case 's':
+          if (direction !== 'up') direction = 'down';
+          break;
+        case 'ArrowLeft':
+        case 'a':
+          if (direction !== 'right') direction = 'left';
+          break;
+        case 'ArrowRight':
+        case 'd':
+          if (direction !== 'left') direction = 'right';
+          break;
+        case ' ':
+          if (!gameLoop) initGame(); // Now properly checks if game isn't running
+          break;
+      }
     });
 
     // Start the game
