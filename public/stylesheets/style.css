@@ -1,0 +1,16 @@
+body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: #1a1a1a;
+  color: white;
+  font-family: Arial, sans-serif;
+}
+
+a {
+  color: #00B7FF;
+}
+
+canvas {
+  border: 4px dotted #f20404;
+}

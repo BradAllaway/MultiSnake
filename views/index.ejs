@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>
+    <%= title %>
+  </title>
+  <link rel='stylesheet' href='/stylesheets/style.css' />
+</head>
+
+<body>
+  <h1>Brad's Snake Game</h1>
+  <canvas id="gameCanvas" width="400" height="400"></canvas>
+  <div id="score" style="margin-top: 20px; font-size: 24px;">Score: 0</div>
+
+  <div id="speed" style="margin-top: 20px; font-size: 24px;">speed: 0</div>
+
+  <button id="bradButton" style="padding: 10px; background-color: rgb(238, 143, 27); border-radius: 10px;">
+    Don't click this button
+  </button>
+
+  <script>
+    // Array of colors to cycle through
+    const colors = [
+      "rgb(238, 143, 27)", // Original color
+      "rgb(0, 200, 100)",  // Green
+      "rgb(255, 99, 132)", // Red
+      "rgb(54, 162, 235)", // Blue
+      "rgb(255, 159, 64)"  // Orange
+    ];
+
+    // Variable to track the current color index
+    let currentColorIndex = 0;
+
+    // Add click event listener to the button
+    document.getElementById("bradButton").addEventListener("click", function () {
+      // Change the button's color to the next one in the array
+      currentColorIndex = (currentColorIndex + 1) % colors.length;
+      this.style.backgroundColor = colors[currentColorIndex];
+
+      gameSpeed = Math.max(50, gameSpeed + 10);
+      speedElement.textContent = `Speed: ${gameSpeed}`;
+      clearInterval(gameLoop);
+      gameLoop = setInterval(update, gameSpeed);
+    });
+  </script>
+
+  <script>
+    const canvas = document.getElementById('gameCanvas');
+    const ctx = canvas.getContext('2d');
+    const scoreElement = document.getElementById('score');
+
+    const speedElement = document.getElementById('speed');
+
+    const gridSize = 20;
+    const tileCount = canvas.width / gridSize;
+
+    let snake = [];
+    let food = {};
+    let direction = 'right';
+    let score = 0;
+    let gameLoop;
+    let gameSpeed = 150;
+
+    function initGame() {
+      snake = [{ x: 10, y: 10 }];
+      direction = 'right';
+      score = 0;
+      gameSpeed = 150;
+      scoreElement.textContent = `Score: ${score}`;
+
+      speedElement.textContent = `Speed: ${gameSpeed}`;
+
+      generateFood();
+      if (gameLoop) clearInterval(gameLoop);
+      gameLoop = setInterval(update, gameSpeed);
+    }
+
+    function generateFood() {
+      let newFood;
+      do {
+        newFood = {
+          x: Math.floor(Math.random() * tileCount),
+          y: Math.floor(Math.random() * tileCount)
+        };
+      } while (snake.some(segment => segment.x === newFood.x && segment.y === newFood.y));
+      food = newFood;
+    }
+
+    function update() {
+      // Move snake head
+      const head = { ...snake[0] };
+      switch (direction) {
+        case 'up': head.y--; break;
+        case 'down': head.y++; break;
+        case 'left': head.x--; break;
+        case 'right': head.x++; break;
+      }
+
+      // Check wall collision
+      if (head.x < 0 || head.x >= tileCount || head.y < 0 || head.y >= tileCount) {
+        gameOver();
+        return;
+      }
+
+      // Check self collision
+      if (snake.some(segment => segment.x === head.x && segment.y === head.y)) {
+        gameOver();
+        return;
+      }
+
+      snake.unshift(head);
+
+      // Check food collision
+      if (head.x === food.x && head.y === food.y) {
+        score += 10;
+
+        scoreElement.textContent = `Score: ${score}`;
+        generateFood();
+        // Increase speed every 50 points
+        if (score % 50 === 0) {
+          gameSpeed = Math.max(50, gameSpeed - 20);
+          speedElement.textContent = `Speed: ${gameSpeed}`;
+
+          clearInterval(gameLoop);
+          gameLoop = setInterval(update, gameSpeed);
+        }
+      } else {
+        snake.pop();
+      }
+      draw();
+    }
+
+    // Load the apple image
+    const appleImage = new Image();
+    appleImage.src = '/images/apple.png'; // Make sure the image is in the same directory
+
+    function draw() {
+      // Clear canvas
+      ctx.fillStyle = '#000';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      // Draw snake
+      snake.forEach((segment, index) => {
+        ctx.fillStyle = index === 0 ? '#2ecc71' : '#27ae60';
+        ctx.fillRect(segment.x * gridSize, segment.y * gridSize, gridSize - 2, gridSize - 2);
+      });
+
+      // Draw apple image for food
+      ctx.drawImage(appleImage, food.x * gridSize, food.y * gridSize - 2, gridSize - 2, gridSize - 2);
+    }
+
+    function gameOver() {
+      clearInterval(gameLoop);
+      gameLoop = null;  // Add this line to mark game as ended
+      ctx.fillStyle = '#fff';
+      ctx.font = '15px Arial';
+      ctx.textAlign = 'center';
+      ctx.fillText('Game Over! Press Space to Restart', canvas.width / 2, canvas.height / 2);
+    }
+
+    document.addEventListener('keydown', (event) => {
+      event.preventDefault();
+      switch (event.key) {
+        case 'ArrowUp':
+          if (direction !== 'down') direction = 'up';
+          break;
+        case 'ArrowDown':
+          if (direction !== 'up') direction = 'down';
+          break;
+        case 'ArrowLeft':
+          if (direction !== 'right') direction = 'left';
+          break;
+        case 'ArrowRight':
+          if (direction !== 'left') direction = 'right';
+          break;
+        case ' ':
+          if (!gameLoop) initGame();  // Now properly checks if game isn't running
+          break;
+      }
+    });
+
+    // Start the game
+    initGame();
+  </script>
+</body>
+
+</html>
