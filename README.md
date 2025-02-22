@@ -3,7 +3,7 @@ The world's best multiplayer ***Snake game***
 
 <hr/>
 
-| Syntax | Description |
+| Snake | Why its the best |
 | ----------- | ----------- |
 | Header | Title |
 | Paragraph | Text |
