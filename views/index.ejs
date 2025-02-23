@@ -9,14 +9,27 @@
 </head>
 
 <body>
-  <h1>Brad's Snake Game</h1>
-  <canvas id="gameCanvas" width="400" height="400"></canvas>
-  <div id="score" style="margin-top: 20px; font-size: 24px;">Score: 0</div>
-  <div id="speed" style="margin-top: 20px; font-size: 24px;">speed: 0</div>
+  <h1>Slither Clash</h1>
 
-  <button id="bradButton" style="padding: 10px; background-color: rgb(238, 143, 27); border-radius: 10px;">
+  <canvas id="gameCanvas" width="500" height="500" style="border: 4px dotted #da0808;"></canvas>
+ 
+  <div id="score" style="margin-top: 20px; font-size: 24px;">Score: 0</div>
+  <div id="speed" style="margin-top: 20px; font-size: 24px; margin-bottom: 20px;">speed: 0</div>
+
+  <button id="leaderboardButton" style="padding: 10px; background-color: rgb(106, 33, 223); border-radius: 10px;;">
+    Click to see leaderboards
+
+  </button>
+
+
+  <button id="bradButton" style="padding: 10px; background-color: rgb(223, 125, 33); border-radius: 10px; margin-bottom: 20px; margin-left: 750px;margin-top: -600px;">
     Don't click this button
   </button>
+
+
+
+
+
 
   <script>
     // Array of colors to cycle through
@@ -65,7 +78,7 @@
       snake = [{ x: 10, y: 10 }];
       direction = 'right';
       score = 0;
-      gameSpeed = 300;
+      gameSpeed = 200;
       scoreElement.textContent = `Score: ${score}`;
 
       speedElement.textContent = `Speed: ${gameSpeed}`;
